@@ -1,7 +1,7 @@
 import sqlite3
 import datetime
 import jenkins
-import request
+#import request
 
 conn = sqlite3.connect('jenkinsjob.db')
 
@@ -10,8 +10,8 @@ def connectToJenkinsURL():
 
     # Connect to Jenkins instance
     url = 'http://localhost:8080'
-    username = 'adebowale'
-    password = 'Adeb0wale'
+    username = 'ENTER_YOUR_USER_NAME'
+    password = 'ENTER_YOUR_PASSWORD'
     server = jenkins.Jenkins(url, username=username, password=password)
     return server
 
@@ -62,7 +62,7 @@ class Jobs(object):
                     curs = conn.cursor()
                     curJob = server.get_build_info(jobName, 1)
                     checked_time = datetime.datetime.fromtimestamp(curJob['timestamp'] * 0.001)
-                    curs.execute('INSERT INTO jenkins_jobs_list VALUES (?,?,?,?,?,?)', (curJob['id'], jobName, checked_time, curJob['result'], '', curJob['duration']))
+                    curs.execute('INSERT INTO jenkins_jobs_list VALUES (?,?,?,?,?,?)', (curJob['id'], jobName, checked_time, curJob['result'], curJob['building'], curJob['duration']))
             except sqlite3.Error as sqlError:
                 print("An error occured while inserting data "+str(sqlError))
-            print('The XXX ' + str(lastBuildNumber))
+            print('The last build ' + str(lastBuildNumber))
